@@ -1,6 +1,14 @@
 package com.example.crocusoft_todo.presentation.home.components
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.example.crocusoft_todo.core.DsTheme
+import com.example.crocusoft_todo.core.Strings
 import com.example.crocusoft_todo.domain.entity.TodoEntity
 import com.example.crocusoft_todo.presentation.home.HomeContract
 
@@ -9,11 +17,31 @@ fun TodoList(
     todos: List<TodoEntity>,
     postIntent: (HomeContract.Intent) -> Unit
 ) {
-    todos.forEach { todo ->
-        TodoItem(
-            todoEntity = todo,
-            postIntent = postIntent
-        )
+
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ){
+        if(todos.isEmpty()){
+            Box(
+                modifier = Modifier.fillMaxSize()
+                    .align(Alignment.Center)
+            ){
+                Text(
+                    text = stringResource(Strings.no_task),
+                    style = DsTheme.textStyle.t17SemiBold
+                )
+            }
+        }else{
+            todos.forEach { todo ->
+                TodoItem(
+                    todoEntity = todo,
+                    postIntent = postIntent
+                )
+            }
+        }
     }
+
+
 
 }

@@ -25,12 +25,13 @@ fun HomeSearchContainer(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         HomeSearchTextField(
+            modifier = Modifier.weight(0.8f),
             value = searchQuery,
             postIntent = postIntent
         )
 
         AppButton(
-            modifier = Modifier.padding(DsTheme.dimens.dp1),
+            modifier = Modifier.weight(0.2f).padding(DsTheme.dimens.dp1),
             text = stringResource(Strings.add),
             postIntent = postIntent,
             textStyle = DsTheme.textStyle.t14White

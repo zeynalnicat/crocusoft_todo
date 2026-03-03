@@ -6,6 +6,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import com.example.crocusoft_todo.ui.theme.Black
+import com.example.crocusoft_todo.ui.theme.TextGray
 
 
 object DTextStyle {
@@ -46,6 +47,12 @@ object DTextStyle {
         fontSize = DsTheme.dimens.s17,
         fontWeight = FontWeight.W500,
         color = Black
+    )
+
+    val t17SemiBold = TextStyle(
+        fontSize = DsTheme.dimens.s17,
+        fontWeight = FontWeight.W600,
+        color = TextGray
     )
 
     val t14White = TextStyle(

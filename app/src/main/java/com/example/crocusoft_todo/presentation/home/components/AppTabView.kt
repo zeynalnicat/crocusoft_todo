@@ -95,9 +95,9 @@ fun AppTabView(
             ) { page ->
 
             when (page) {
-                1 -> TodoList(todos = state.allTodos, postIntent = postIntent)
-                2 -> TodoList(todos = state.activeTodos, postIntent = postIntent)
-                3 -> TodoList(todos = state.completedTodos, postIntent = postIntent)
+                0 -> TodoList(todos = state.allTodos, postIntent = postIntent)
+                1 -> TodoList(todos = state.activeTodos, postIntent = postIntent)
+                2 -> TodoList(todos = state.completedTodos, postIntent = postIntent)
             }
         }
 

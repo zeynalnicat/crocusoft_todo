@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import com.example.crocusoft_todo.core.Colors
 import com.example.crocusoft_todo.core.DsTheme
 import com.example.crocusoft_todo.core.Strings
@@ -19,14 +20,16 @@ import com.example.crocusoft_todo.presentation.home.HomeContract
 
 @Composable
 fun HomeSearchTextField(
+    modifier: Modifier,
     value: String,
     postIntent: (HomeContract.Intent) -> Unit
 ) {
 
     TextField(
-        modifier = Modifier
+        modifier = modifier
             .widthIn(DsTheme.dimens.maxWidth),
         value = value,
+        maxLines = 1,
         onValueChange = { postIntent(HomeContract.Intent.OnSetQuery(it)) },
         placeholder = {
             Text(
