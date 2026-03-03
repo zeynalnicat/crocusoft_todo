@@ -1,6 +1,8 @@
 package com.example.crocusoft_todo.presentation.home.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,20 +21,23 @@ fun TodoList(
 ) {
 
 
-    Box(
+    Row(
         modifier = Modifier.fillMaxSize()
-    ){
-        if(todos.isEmpty()){
-            Box(
+    ) {
+        if (todos.isEmpty()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()
-                    .align(Alignment.Center)
-            ){
+
+            ) {
                 Text(
                     text = stringResource(Strings.no_task),
                     style = DsTheme.textStyle.t17SemiBold
                 )
             }
-        }else{
+
+        } else {
             todos.forEach { todo ->
                 TodoItem(
                     todoEntity = todo,
@@ -41,7 +46,6 @@ fun TodoList(
             }
         }
     }
-
 
 
 }
