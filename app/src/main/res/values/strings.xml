@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">crocusoft_todo</string>
+
+    <string name="splash_title">Pick some new habits to get started</string>
+    <string name="splash_continue">Continue</string>
+    <string name="hint">Write a task…</string>
+    <string name="add"> Add </string>
+    <string name="home_today">Today</string>
+    <string name="all">All</string>
+    <string name="active">Active</string>
+    <string name="completed">Completed</string>
+    <string name="success">Successfully Added</string>
+</resources>
