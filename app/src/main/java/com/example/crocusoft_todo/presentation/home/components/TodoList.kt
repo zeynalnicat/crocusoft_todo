@@ -1,5 +1,6 @@
 package com.example.crocusoft_todo.presentation.home.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -38,6 +39,7 @@ fun TodoList(
             }
 
         } else {
+            Log.i("todos",todos.toString())
             todos.forEach { todo ->
                 TodoItem(
                     todoEntity = todo,
