@@ -9,6 +9,8 @@ sealed interface HomeContract {
 
         data class OnEditTodo(val todoEntity: TodoEntity):Intent
 
+        data object OnClear: Intent
+
         data object OnAdd : Intent
 
         data class OnCheckedTodo(val todoEntity: TodoEntity) : Intent

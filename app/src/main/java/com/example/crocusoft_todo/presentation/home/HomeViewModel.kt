@@ -2,6 +2,7 @@ package com.example.crocusoft_todo.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.util.query
 import com.example.crocusoft_todo.core.AppErrors
 import com.example.crocusoft_todo.core.di.Result
 import com.example.crocusoft_todo.data.mapper.toEntity
@@ -77,6 +78,19 @@ class HomeViewModel @Inject constructor(
 
             is HomeContract.Intent.OnEditTodo -> {
                 edit(intent.todoEntity)
+            }
+
+            HomeContract.Intent.OnClear -> {
+                viewModelScope.launch {
+                    _state.emit(
+                        _state.value.copy(
+                            query = "",
+                            isEditIntent = false,
+                            selectedId = -1
+                        )
+                    )
+                }
+
             }
         }
     }
@@ -220,7 +234,13 @@ class HomeViewModel @Inject constructor(
 
                     is Result.Success<*> -> {
                         _effect.emit(HomeContract.Effect.OnShowSuccess("Successfully added!"))
-                        _state.emit(_state.value.copy(query = "", isEditIntent = false, selectedId = -1))
+                        _state.emit(
+                            _state.value.copy(
+                                query = "",
+                                isEditIntent = false,
+                                selectedId = -1
+                            )
+                        )
                         onFetchTodos()
                         onFetchActives()
                     }
