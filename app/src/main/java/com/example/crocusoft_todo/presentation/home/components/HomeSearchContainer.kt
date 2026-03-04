@@ -31,9 +31,11 @@ fun HomeSearchContainer(
         )
 
         AppButton(
-            modifier = Modifier.weight(0.2f).padding(DsTheme.dimens.dp1),
+            modifier = Modifier
+                .weight(0.2f)
+                .padding(DsTheme.dimens.dp1),
             text = stringResource(Strings.add),
-            postIntent = postIntent,
+            action = { postIntent(HomeContract.Intent.OnAdd) },
             textStyle = DsTheme.textStyle.t14White
         )
     }

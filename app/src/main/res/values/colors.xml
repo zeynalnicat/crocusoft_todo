@@ -11,4 +11,6 @@
     <color name="input_background">#F3EFEE</color>
     <color name="primary">#E6D9CB</color>
     <color name="secondary">#F3EFEE</color>
+    <color name="red">#D2330B</color>
+    <color name="faded">#000000</color>
 </resources>

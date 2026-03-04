@@ -7,9 +7,16 @@ interface HomeRepository {
 
     suspend fun insert(todoEntity: TodoEntity): com.example.crocusoft_todo.core.di.Result<Unit>
 
-    suspend fun getAll(): com.example.crocusoft_todo.core.di.Result<List<TodoLocalEntity>>
+    suspend fun getAll(): com.example.crocusoft_todo.core.di.Result<List<TodoEntity>>
 
-    suspend fun getWhereCompleted(): com.example.crocusoft_todo.core.di.Result<List<TodoLocalEntity>>
+    suspend fun getWhereCompleted(): com.example.crocusoft_todo.core.di.Result<List<TodoEntity>>
+
+    suspend fun getActives(): com.example.crocusoft_todo.core.di.Result<List<TodoEntity>>
 
     suspend fun delete(todoEntity: TodoEntity): com.example.crocusoft_todo.core.di.Result<Unit>
+
+    suspend fun checkTodo(
+        id: Int,
+        isCompleted: Boolean
+    ): com.example.crocusoft_todo.core.di.Result<Unit>
 }

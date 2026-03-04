@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import com.example.crocusoft_todo.ui.theme.Black
 import com.example.crocusoft_todo.ui.theme.TextGray
 
@@ -47,6 +48,13 @@ object DTextStyle {
         fontSize = DsTheme.dimens.s17,
         fontWeight = FontWeight.W500,
         color = Black
+    )
+
+    val t17MediumFaded = TextStyle(
+        fontSize = DsTheme.dimens.s17,
+        fontWeight = FontWeight.W500,
+        color = Black.copy(alpha = 0.4f),
+        textDecoration = TextDecoration.LineThrough
     )
 
     val t17SemiBold = TextStyle(

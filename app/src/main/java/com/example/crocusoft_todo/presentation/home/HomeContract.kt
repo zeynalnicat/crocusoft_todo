@@ -16,6 +16,8 @@ sealed interface HomeContract {
         data class OnDeleteTodo(val todoEntity: TodoEntity) : Intent
 
         data object OnFetchCompletedTodos : Intent
+
+        data object OnFetchActiveTodos:Intent
     }
 
     sealed interface Effect {

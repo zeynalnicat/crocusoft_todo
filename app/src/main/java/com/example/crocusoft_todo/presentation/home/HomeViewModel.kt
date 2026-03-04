@@ -6,6 +6,8 @@ import com.example.crocusoft_todo.core.di.Result
 import com.example.crocusoft_todo.data.mapper.toEntity
 import com.example.crocusoft_todo.domain.entity.TodoEntity
 import com.example.crocusoft_todo.domain.local_entity.TodoLocalEntity
+import com.example.crocusoft_todo.domain.usecase.CheckTodoUseCase
+import com.example.crocusoft_todo.domain.usecase.FetchCompletedUseCase
 import com.example.crocusoft_todo.domain.usecase.FetchTodosUseCase
 import com.example.crocusoft_todo.domain.usecase.InsertTodoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +23,9 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val fetchTodosUseCase: FetchTodosUseCase,
-    private val insertTodoUseCase: InsertTodoUseCase
+    private val insertTodoUseCase: InsertTodoUseCase,
+    private val fetchCompletedUseCase: FetchCompletedUseCase,
+    private val checkTodoUseCase: CheckTodoUseCase,
 ) :
     ViewModel() {
 
@@ -47,19 +51,68 @@ class HomeViewModel @Inject constructor(
             }
 
             is HomeContract.Intent.OnCheckedTodo -> {
-
+                onCheckTodo(intent.todoEntity.id, !intent.todoEntity.isCompleted)
             }
 
             is HomeContract.Intent.OnDeleteTodo -> {}
             HomeContract.Intent.OnFetchCompletedTodos -> {
-
+                onFetchCompletedTodos()
             }
 
             HomeContract.Intent.OnFetchTodos -> {
                 onFetchTodos()
             }
+
+            HomeContract.Intent.OnFetchActiveTodos -> {
+                onFetchActives()
+            }
         }
     }
+
+    private fun onCheckTodo(id: Int, isCompleted: Boolean) {
+        viewModelScope.launch {
+            when (val result = checkTodoUseCase(id, isCompleted)) {
+                is Result.Error -> {
+                    _effect.emit(HomeContract.Effect.OnShowError(result.message))
+                }
+
+                is Result.Success<*> -> {
+                    onFetchTodos()
+                }
+            }
+        }
+    }
+
+    private fun onFetchActives() {
+        viewModelScope.launch {
+            when (val result = fetchCompletedUseCase(isCompleted = false)) {
+                is Result.Error -> {
+                    _effect.emit(HomeContract.Effect.OnShowError(result.message))
+                }
+
+                is Result.Success<List<TodoEntity>> -> {
+                    _state.emit(_state.value.copy(activeTodos = result.data))
+                }
+            }
+        }
+    }
+
+    private fun onFetchCompletedTodos() {
+
+        viewModelScope.launch {
+            when (val result = fetchCompletedUseCase()) {
+                is Result.Error -> {
+                    _effect.emit(HomeContract.Effect.OnShowError(result.message))
+                }
+
+                is Result.Success<List<TodoEntity>> -> {
+                    _state.emit(_state.value.copy(completedTodos = result.data))
+                }
+            }
+        }
+
+    }
+
 
     private fun onAdd() {
         viewModelScope.launch {
@@ -91,9 +144,9 @@ class HomeViewModel @Inject constructor(
                     _effect.emit(HomeContract.Effect.OnShowError(result.message))
                 }
 
-                is Result.Success<List<TodoLocalEntity>> -> {
+                is Result.Success<List<TodoEntity>> -> {
 
-                    _state.emit(_state.value.copy(allTodos = result.data.map { it.toEntity() }))
+                    _state.emit(_state.value.copy(allTodos = result.data))
                 }
 
             }
