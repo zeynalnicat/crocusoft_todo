@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
@@ -55,7 +56,7 @@ fun TodoItem(
     postIntent: (HomeContract.Intent) -> Unit,
 ) {
     var offsetX by remember { mutableFloatStateOf(0f) }
-    val maxSwipe = -220f
+    val maxSwipe = -360f
 
     Box(
         modifier = modifier
@@ -71,11 +72,28 @@ fun TodoItem(
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                AppButton(
-                    text = "",
-                    isText = false,
-                    color = Colors.red,
-                ) { postIntent(HomeContract.Intent.OnDeleteTodo(todoEntity)) }
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(DsTheme.dimens.dp1),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    IconButton(
+                        onClick = { postIntent(HomeContract.Intent.OnEditTodo(todoEntity)) }
+                    ) {
+                        Icon(imageVector = Icons.Default.Edit, contentDescription = null)
+                    }
+
+                    AppButton(
+                        text = "",
+                        isText = false,
+                        color = Colors.red,
+                    ) { postIntent(HomeContract.Intent.OnDeleteTodo(todoEntity)) }
+
+
+                }
+
+
             }
         }
 

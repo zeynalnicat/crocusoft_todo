@@ -12,6 +12,7 @@ import com.example.crocusoft_todo.domain.usecase.FetchCompletedUseCase
 import com.example.crocusoft_todo.domain.usecase.FetchTodosUseCase
 import com.example.crocusoft_todo.domain.usecase.InsertTodoUseCase
 import com.example.crocusoft_todo.domain.usecase.RemoveTodoUseCase
+import com.example.crocusoft_todo.domain.usecase.UpdateTaskUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -27,6 +28,7 @@ class HomeViewModel @Inject constructor(
     private val fetchTodosUseCase: FetchTodosUseCase,
     private val insertTodoUseCase: InsertTodoUseCase,
     private val fetchCompletedUseCase: FetchCompletedUseCase,
+    private val updateTaskUseCase: UpdateTaskUseCase,
     private val checkTodoUseCase: CheckTodoUseCase,
     private val removeTodoUseCase: RemoveTodoUseCase
 ) :
@@ -72,6 +74,22 @@ class HomeViewModel @Inject constructor(
             HomeContract.Intent.OnFetchActiveTodos -> {
                 onFetchActives()
             }
+
+            is HomeContract.Intent.OnEditTodo -> {
+                edit(intent.todoEntity)
+            }
+        }
+    }
+
+    private fun edit(todoEntity: TodoEntity) {
+        viewModelScope.launch {
+            _state.emit(
+                _state.value.copy(
+                    isEditIntent = true,
+                    query = todoEntity.taskName,
+                    selectedId = todoEntity.id
+                )
+            )
         }
     }
 
@@ -87,7 +105,8 @@ class HomeViewModel @Inject constructor(
                     _state.emit(
                         _state.value.copy(
                             activeTodos = _state.value.activeTodos - todo
-                        ))
+                        )
+                    )
                 }
             }
         }
@@ -102,7 +121,8 @@ class HomeViewModel @Inject constructor(
                     _state.emit(
                         _state.value.copy(
                             activeTodos = _state.value.activeTodos - todo
-                        ))
+                        )
+                    )
                 }
             }
         }
@@ -163,27 +183,52 @@ class HomeViewModel @Inject constructor(
             return
         }
 
-        viewModelScope.launch {
-            when (val result =
-                insertTodoUseCase(
-                    TodoEntity(
-                        0,
-                        taskName = _state.value.query,
-                        isCompleted = false
-                    )
-                )) {
-                is Result.Error -> {
-                    _effect.emit(HomeContract.Effect.OnShowError(result.message))
-                }
+        if (!_state.value.isEditIntent) {
+            viewModelScope.launch {
+                when (val result =
+                    insertTodoUseCase(
+                        TodoEntity(
+                            0,
+                            taskName = _state.value.query,
+                            isCompleted = false
+                        )
+                    )) {
+                    is Result.Error -> {
+                        _effect.emit(HomeContract.Effect.OnShowError(result.message))
+                    }
 
-                is Result.Success<*> -> {
-                    _effect.emit(HomeContract.Effect.OnShowSuccess("Successfully added!"))
-                    _state.emit(_state.value.copy(query = ""))
-                    onFetchTodos()
-                    onFetchActives()
+                    is Result.Success<*> -> {
+                        _effect.emit(HomeContract.Effect.OnShowSuccess("Successfully added!"))
+                        _state.emit(_state.value.copy(query = ""))
+                        onFetchTodos()
+                        onFetchActives()
+                    }
+                }
+            }
+        } else {
+            viewModelScope.launch {
+
+
+                when (val result =
+                    updateTaskUseCase(
+                        _state.value.selectedId,
+                        _state.value.query
+                    )) {
+                    is Result.Error -> {
+                        _effect.emit(HomeContract.Effect.OnShowError(result.message))
+                    }
+
+                    is Result.Success<*> -> {
+                        _effect.emit(HomeContract.Effect.OnShowSuccess("Successfully added!"))
+                        _state.emit(_state.value.copy(query = "", isEditIntent = false, selectedId = -1))
+                        onFetchTodos()
+                        onFetchActives()
+                    }
                 }
             }
         }
+
+
     }
 
     private fun onFetchTodos() {

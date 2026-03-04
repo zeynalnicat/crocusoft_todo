@@ -27,7 +27,6 @@ import com.example.crocusoft_todo.presentation.home.components.AppTabView
 import com.example.crocusoft_todo.presentation.home.components.HomeSearchContainer
 
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.collect
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -102,7 +101,7 @@ fun HomeContent(
                 ),
                 searchQuery = state.query,
                 postIntent = postIntent,
-
+                isEditAction = state.isEditIntent
                 )
         }
     }

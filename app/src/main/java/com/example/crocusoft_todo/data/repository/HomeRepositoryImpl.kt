@@ -60,6 +60,21 @@ class HomeRepositoryImpl @Inject constructor(val todoDao: TodoDao) : HomeReposit
         }
     }
 
+    override suspend fun updateTask(id: Int, task: String): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+                val response = todoDao.updateName(id, task)
+                if (response != 0) {
+                    Result.Success(Unit)
+                } else {
+                    Result.Error(AppErrors.unknownError)
+                }
+
+            } catch (e: Exception) {
+                Result.Error(e.message ?: AppErrors.unknownError)
+            }
+        }
+
     override suspend fun delete(todoEntity: TodoEntity): Result<Unit> =
         withContext(Dispatchers.IO) {
             try {

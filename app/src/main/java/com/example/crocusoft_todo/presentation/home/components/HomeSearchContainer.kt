@@ -17,8 +17,10 @@ import com.example.crocusoft_todo.presentation.home.HomeContract
 fun HomeSearchContainer(
     modifier: Modifier = Modifier,
     searchQuery: String,
-    postIntent: (HomeContract.Intent) -> Unit
-) {
+    isEditAction: Boolean = false,
+    postIntent: (HomeContract.Intent) -> Unit,
+
+    ) {
 
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -34,8 +36,8 @@ fun HomeSearchContainer(
             modifier = Modifier
                 .weight(0.2f)
                 .padding(DsTheme.dimens.dp1),
-            text = stringResource(Strings.add),
-            action = { postIntent(HomeContract.Intent.OnAdd) },
+            text = if (!isEditAction) stringResource(Strings.add) else stringResource(Strings.edit),
+            action = {  postIntent(HomeContract.Intent.OnAdd) },
             textStyle = DsTheme.textStyle.t14White
         )
     }

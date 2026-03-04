@@ -13,6 +13,8 @@ interface HomeRepository {
 
     suspend fun getActives(): com.example.crocusoft_todo.core.di.Result<List<TodoEntity>>
 
+    suspend fun updateTask(id:Int,task:String): com.example.crocusoft_todo.core.di.Result<Unit>
+
     suspend fun delete(todoEntity: TodoEntity): com.example.crocusoft_todo.core.di.Result<Unit>
 
     suspend fun checkTodo(

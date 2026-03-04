@@ -22,6 +22,9 @@ interface TodoDao {
     @Query("Select * from todos where isCompleted=:isCompleted")
     suspend fun getAllWhereCompleted(isCompleted: Boolean = true): List<TodoLocalEntity>
 
+    @Query("Update todos Set task=:task Where id=:id")
+    suspend fun updateName(id: Int, task: String): Int
+
     @Delete
     fun delete(todoEntity: TodoLocalEntity)
 
