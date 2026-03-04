@@ -1,8 +1,7 @@
-package com.example.crocusoft_todo.domain.local_entity
+package com.example.crocusoft_todo.data.service.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
 
 @Entity(tableName = "Todos")
 data class TodoLocalEntity(

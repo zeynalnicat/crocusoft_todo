@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.crocusoft_todo.domain.local_entity.TodoLocalEntity
+import com.example.crocusoft_todo.data.service.local.TodoLocalEntity
 import kotlinx.coroutines.flow.Flow
 
 

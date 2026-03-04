@@ -6,7 +6,7 @@ import com.example.crocusoft_todo.data.TodoDao
 import com.example.crocusoft_todo.data.mapper.toEntity
 import com.example.crocusoft_todo.data.mapper.toLocalEntity
 import com.example.crocusoft_todo.domain.entity.TodoEntity
-import com.example.crocusoft_todo.domain.local_entity.TodoLocalEntity
+import com.example.crocusoft_todo.data.service.local.TodoLocalEntity
 import com.example.crocusoft_todo.domain.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

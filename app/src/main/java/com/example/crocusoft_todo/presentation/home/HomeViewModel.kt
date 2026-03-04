@@ -6,7 +6,7 @@ import com.example.crocusoft_todo.core.AppErrors
 import com.example.crocusoft_todo.core.di.Result
 import com.example.crocusoft_todo.data.mapper.toEntity
 import com.example.crocusoft_todo.domain.entity.TodoEntity
-import com.example.crocusoft_todo.domain.local_entity.TodoLocalEntity
+import com.example.crocusoft_todo.data.service.local.TodoLocalEntity
 import com.example.crocusoft_todo.domain.usecase.CheckTodoUseCase
 import com.example.crocusoft_todo.domain.usecase.FetchCompletedUseCase
 import com.example.crocusoft_todo.domain.usecase.FetchTodosUseCase

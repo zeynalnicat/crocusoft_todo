@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
@@ -51,120 +53,90 @@ fun TodoItem(
     todoEntity: TodoEntity,
     postIntent: (HomeContract.Intent) -> Unit,
 ) {
-
-
     var offsetX by remember { mutableFloatStateOf(0f) }
-
+    val maxSwipe = -220f
 
     Box(
         modifier = Modifier
-            .fillMaxSize()
-            .pointerInput(Unit) {
-                detectHorizontalDragGestures { _, dragAmount ->
-                    offsetX = (offsetX + dragAmount).coerceIn(-300f, 0f)
-                }
-            }
+            .fillMaxWidth()
+            .height(56.dp)
     ) {
 
         if (!todoEntity.isCompleted) {
             Row(
-                modifier = Modifier
-                    .padding(horizontal = DsTheme.dimens.dp4)
-                    .fillMaxWidth(),
 
+                modifier = Modifier
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 AppButton(
                     text = "",
                     isText = false,
                     color = Colors.red,
-                ) {
-                    postIntent(HomeContract.Intent.OnDeleteTodo(todoEntity))
-                }
-
+                ) { postIntent(HomeContract.Intent.OnDeleteTodo(todoEntity)) }
             }
         }
-
-
-
-
 
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .offset { IntOffset(offsetX.roundToInt(), 0) }
-
-
+                .pointerInput(Unit) {
+                    detectHorizontalDragGestures(
+                        onDragEnd = {
+                            offsetX = if (offsetX < maxSwipe / 2) maxSwipe else 0f
+                        }
+                    ) { _, dragAmount ->
+                        offsetX = (offsetX + dragAmount)
+                            .coerceIn(maxSwipe, 0f)
+                    }
+                }
+                .clip(RoundedCornerShape(DsTheme.dimens.dp3))
+                .background(
+                    color = if (!todoEntity.isCompleted) colorResource(Colors.secondary) else Color.Transparent
+                )
+                .border(
+                    border = if (todoEntity.isCompleted) BorderStroke(
+                        width = DsTheme.dimens.dp01, color = colorResource(
+                            Colors.faded
+                        ).copy(alpha = 0.1f)
+                    ) else BorderStroke(
+                        width = DsTheme.dimens.dp02,
+                        color = Color.Transparent
+                    )
+                )
+                .padding(horizontal = DsTheme.dimens.dp3),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier
-                    .padding(DsTheme.dimens.dp3)
-                    .fillMaxWidth()
 
-                    .clip(RoundedCornerShape(DsTheme.dimens.dp3))
+            Checkbox(
+                checked = todoEntity.isCompleted,
+                onCheckedChange = {
+                    if (!todoEntity.isCompleted) {
+                        postIntent(HomeContract.Intent.OnCheckedTodo(todoEntity))
+                    }
 
-                    .background(
-                        color = if (!todoEntity.isCompleted) colorResource(Colors.secondary) else Color.Transparent
-                    )
-                    .border(
-                        border = if (todoEntity.isCompleted) BorderStroke(
-                            width = DsTheme.dimens.dp01, color = colorResource(
-                                Colors.faded
-                            ).copy(alpha = 0.1f)
-                        ) else BorderStroke(
-                            width = DsTheme.dimens.dp02,
-                            color = Color.Transparent
-                        )
-                    ),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colorResource(Colors.black).copy(alpha = 0.4f)
+                )
+            )
 
-                Row(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(DsTheme.dimens.dp1),
-                    horizontalArrangement = Arrangement.spacedBy(DsTheme.dimens.dp2),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Checkbox(
-                        checked = todoEntity.isCompleted,
-                        onCheckedChange = {
-                            if (!todoEntity.isCompleted) {
-                                postIntent(HomeContract.Intent.OnCheckedTodo(todoEntity))
-                            }
+            Text(
+                modifier = Modifier.weight(1f),
+                text = todoEntity.taskName,
+                style = if (!todoEntity.isCompleted) DsTheme.textStyle.t17Medium else DsTheme.textStyle.t17MediumFaded,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
 
-                        },
-                        colors = CheckboxDefaults.colors(
-                            checkedColor = colorResource(Colors.black).copy(alpha = 0.4f)
-                        )
-                    )
-
-                    Text(
-                        text = todoEntity.taskName,
-                        style = if (!todoEntity.isCompleted) DsTheme.textStyle.t17Medium else DsTheme.textStyle.t17MediumFaded,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-
-                if (!todoEntity.isCompleted) {
-                    Icon(
-                        painter = painterResource(Drawables.icon_frame),
-                        contentDescription = null
-                    )
-                }
-
-
-            }
-
-
+            Icon(
+                painter = painterResource(Drawables.icon_frame),
+                contentDescription = null
+            )
         }
     }
-
-
 }
+
+

@@ -1,7 +1,7 @@
 package com.example.crocusoft_todo.domain.repository
 
 import com.example.crocusoft_todo.domain.entity.TodoEntity
-import com.example.crocusoft_todo.domain.local_entity.TodoLocalEntity
+import com.example.crocusoft_todo.data.service.local.TodoLocalEntity
 
 interface HomeRepository {
 
