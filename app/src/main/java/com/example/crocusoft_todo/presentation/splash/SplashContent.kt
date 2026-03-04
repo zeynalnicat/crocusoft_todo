@@ -1,5 +1,6 @@
 package com.example.crocusoft_todo.presentation.splash
 
+import android.content.SharedPreferences
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -29,13 +31,33 @@ import com.example.crocusoft_todo.core.DTextStyle
 import com.example.crocusoft_todo.core.Drawables
 import com.example.crocusoft_todo.core.DsTheme
 import com.example.crocusoft_todo.core.Strings
+import com.example.crocusoft_todo.presentation.home.HomeContract
 import com.example.crocusoft_todo.ui.navigation.AppRoutes
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collect
 
 
 @Composable
 fun SplashContent(
-    navController: NavController
+    navController: NavController,
+    effect: SharedFlow<SplashContract.Effect>,
+    postIntent: (SplashContract.Intent) -> Unit
 ) {
+
+
+    LaunchedEffect(Unit) {
+        postIntent(SplashContract.Intent.CheckLog)
+    }
+
+    LaunchedEffect(effect) {
+        effect.collect {
+            when (it) {
+                SplashContract.Effect.Navigate -> navController.navigate(AppRoutes.HomeScreen.route)
+            }
+        }
+    }
+
+
 
     Scaffold(
 
@@ -43,7 +65,7 @@ fun SplashContent(
 
 
         Box(
-           modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             Image(
                 modifier = Modifier.fillMaxSize(),
@@ -103,7 +125,7 @@ fun SplashContent(
                             modifier = Modifier.fillMaxWidth(),
                             text = stringResource(Strings.splash_continue)
                         ) {
-                            navController.navigate(AppRoutes.HomeScreen.route)
+                            postIntent(SplashContract.Intent.HandleLog)
                         }
 
                     }
