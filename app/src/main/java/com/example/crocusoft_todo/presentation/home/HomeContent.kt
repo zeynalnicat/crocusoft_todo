@@ -60,7 +60,7 @@ fun HomeContent(
                 .padding(DsTheme.dimens.dp4)
         ) {
 
-            LazyColumn {
+            LazyColumn{
 
                 item {
                     Text(

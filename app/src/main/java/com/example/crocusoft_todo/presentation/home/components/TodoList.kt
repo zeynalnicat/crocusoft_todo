@@ -1,6 +1,11 @@
 package com.example.crocusoft_todo.presentation.home.components
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,8 +33,6 @@ fun TodoList(
     tabIndex: AppTabIndex,
     postIntent: (HomeContract.Intent) -> Unit
 ) {
-
-
 
 
     LaunchedEffect(Unit) {
@@ -63,12 +66,23 @@ fun TodoList(
         } else {
             Log.i("todos", todos.toString())
             todos.forEach { todo ->
-                TodoItem(
-                    todoEntity = todo,
-                    postIntent = postIntent
-                )
+                AnimatedVisibility(
+                    visible = true,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically()
+                ) {
+
+                    TodoItem(
+                        todoEntity = todo,
+                        postIntent = postIntent
+                    )
+
+                }
 
                 Spacer(modifier = Modifier.height(DsTheme.dimens.dp2))
+
+
+
             }
         }
     }

@@ -54,7 +54,7 @@ class HomeViewModel @Inject constructor(
             }
 
             is HomeContract.Intent.OnCheckedTodo -> {
-                onCheckTodo(intent.todoEntity.id, !intent.todoEntity.isCompleted)
+                onCheckTodo(intent.todoEntity, !intent.todoEntity.isCompleted)
             }
 
             is HomeContract.Intent.OnDeleteTodo -> {
@@ -75,15 +75,19 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun onCheckTodo(id: Int, isCompleted: Boolean) {
+    private fun onCheckTodo(todo: TodoEntity, isCompleted: Boolean) {
         viewModelScope.launch {
-            when (val result = checkTodoUseCase(id, isCompleted)) {
+            when (val result = checkTodoUseCase(todo.id, isCompleted)) {
                 is Result.Error -> {
                     _effect.emit(HomeContract.Effect.OnShowError(result.message))
                 }
 
                 is Result.Success<*> -> {
                     onFetchTodos()
+                    _state.emit(
+                        _state.value.copy(
+                            activeTodos = _state.value.activeTodos - todo
+                        ))
                 }
             }
         }
@@ -95,6 +99,10 @@ class HomeViewModel @Inject constructor(
                 is Result.Error -> _effect.emit(HomeContract.Effect.OnShowError(result.message))
                 is Result.Success<*> -> {
                     onFetchTodos()
+                    _state.emit(
+                        _state.value.copy(
+                            activeTodos = _state.value.activeTodos - todo
+                        ))
                 }
             }
         }
