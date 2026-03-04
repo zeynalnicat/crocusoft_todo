@@ -1,6 +1,7 @@
 package com.example.crocusoft_todo.presentation.splash
 
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
@@ -41,6 +42,8 @@ class SplashViewModel @Inject constructor(val sharedPreference: SharedPreference
 
             SplashContract.Intent.CheckLog -> {
                 val isLogged = sharedPreference.getBoolean(SHARED_PREF_KEY, false)
+                Log.i("isLogged",isLogged.toString())
+
                 if (isLogged) {
                     viewModelScope.launch {
                         _effect.emit(SplashContract.Effect.Navigate)
