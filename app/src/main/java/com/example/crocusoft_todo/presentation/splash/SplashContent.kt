@@ -55,10 +55,18 @@ fun SplashContent(
                     contentDescription = null,
                 )
             }
-            Text(
-                text = stringResource(Strings.splash_title),
-                style = DTextStyle.t36SemiBold
-            )
+
+            Box(
+                modifier = Modifier
+                    .offset(x = 0.dp, y = -150.dp)
+                    .align(Alignment.Center)
+            ){
+                Text(
+                    text = stringResource(Strings.splash_title),
+                    style = DTextStyle.t36SemiBold
+                )
+
+            }
 
             Box(
                 modifier = Modifier

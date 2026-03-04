@@ -49,6 +49,8 @@ fun TodoItem(
 
     SwipeToDismissBox(
         state = swipeState,
+        enableDismissFromEndToStart = !todoEntity.isCompleted,
+        enableDismissFromStartToEnd = false,
         backgroundContent = {
         },
         content = {
@@ -93,9 +95,10 @@ fun TodoItem(
                         Checkbox(
                             checked = todoEntity.isCompleted,
                             onCheckedChange = {
-                                if (todoEntity.isCompleted) null
-                                else
+                                if (!todoEntity.isCompleted) {
                                     postIntent(HomeContract.Intent.OnCheckedTodo(todoEntity))
+                                }
+
                             },
                             colors = CheckboxDefaults.colors(
                                 checkedColor = colorResource(Colors.black).copy(alpha = 0.4f)

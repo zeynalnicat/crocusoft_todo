@@ -2,6 +2,7 @@ package com.example.crocusoft_todo.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.crocusoft_todo.core.AppErrors
 import com.example.crocusoft_todo.core.di.Result
 import com.example.crocusoft_todo.data.mapper.toEntity
 import com.example.crocusoft_todo.domain.entity.TodoEntity
@@ -84,37 +85,59 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onFetchActives() {
-        viewModelScope.launch {
-            when (val result = fetchCompletedUseCase(isCompleted = false)) {
-                is Result.Error -> {
-                    _effect.emit(HomeContract.Effect.OnShowError(result.message))
-                }
+//        viewModelScope.launch {
+//            when (val result = fetchCompletedUseCase(isCompleted = false)) {
+//                is Result.Error -> {
+//                    _effect.emit(HomeContract.Effect.OnShowError(result.message))
+//                }
+//
+//                is Result.Success<List<TodoEntity>> -> {
+//                    _state.emit(_state.value.copy(activeTodos = result.data))
+//                }
+//            }
+//        }
 
-                is Result.Success<List<TodoEntity>> -> {
-                    _state.emit(_state.value.copy(activeTodos = result.data))
-                }
-            }
+        viewModelScope.launch {
+            _state.emit(_state.value.copy(
+                activeTodos = _state.value.allTodos.filter { !it.isCompleted }
+            ))
         }
     }
 
     private fun onFetchCompletedTodos() {
 
-        viewModelScope.launch {
-            when (val result = fetchCompletedUseCase()) {
-                is Result.Error -> {
-                    _effect.emit(HomeContract.Effect.OnShowError(result.message))
-                }
+//        viewModelScope.launch {
+//            when (val result = fetchCompletedUseCase()) {
+//                is Result.Error -> {
+//                    _effect.emit(HomeContract.Effect.OnShowError(result.message))
+//                }
+//
+//                is Result.Success<List<TodoEntity>> -> {
+//                    _state.emit(_state.value.copy(completedTodos = result.data))
+//                }
+//            }
+//        }
 
-                is Result.Success<List<TodoEntity>> -> {
-                    _state.emit(_state.value.copy(completedTodos = result.data))
-                }
-            }
+        viewModelScope.launch {
+            _state.emit(_state.value.copy(
+                completedTodos = _state.value.allTodos.filter { it.isCompleted }
+            ))
         }
+
+
 
     }
 
 
     private fun onAdd() {
+
+        if (_state.value.query.isEmpty()) {
+            viewModelScope.launch {
+                _effect.emit(HomeContract.Effect.OnShowError(AppErrors.emptyField))
+            }
+            return
+        }
+
         viewModelScope.launch {
             when (val result =
                 insertTodoUseCase(
@@ -146,7 +169,7 @@ class HomeViewModel @Inject constructor(
 
                 is Result.Success<List<TodoEntity>> -> {
 
-                    _state.emit(_state.value.copy(allTodos = result.data))
+                    _state.emit(_state.value.copy(allTodos = result.data.sortedBy { todoEntity -> !todoEntity.isCompleted }))
                 }
 
             }

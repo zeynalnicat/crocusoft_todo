@@ -38,10 +38,6 @@ fun HomeContent(
 
     val snackBarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(Unit) {
-        postIntent(HomeContract.Intent.OnFetchTodos)
-    }
-
     LaunchedEffect(effect) {
         effect.collect {
             when (it) {
@@ -93,9 +89,6 @@ fun HomeContent(
 
 
             }
-
-
-
 
             HomeSearchContainer(
                 modifier = Modifier.align(
