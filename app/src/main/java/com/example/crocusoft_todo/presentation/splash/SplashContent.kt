@@ -1,12 +1,8 @@
 package com.example.crocusoft_todo.presentation.splash
-
-import android.content.SharedPreferences
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -18,12 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.crocusoft_todo.common.components.AppButton
@@ -31,7 +24,6 @@ import com.example.crocusoft_todo.core.DTextStyle
 import com.example.crocusoft_todo.core.Drawables
 import com.example.crocusoft_todo.core.DsTheme
 import com.example.crocusoft_todo.core.Strings
-import com.example.crocusoft_todo.presentation.home.HomeContract
 import com.example.crocusoft_todo.ui.navigation.AppRoutes
 import kotlinx.coroutines.flow.SharedFlow
 

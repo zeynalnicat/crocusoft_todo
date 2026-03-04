@@ -186,7 +186,7 @@ class HomeViewModel @Inject constructor(
 
                 is Result.Success<List<TodoEntity>> -> {
 
-                    _state.emit(_state.value.copy(allTodos = result.data.sortedBy { todoEntity -> !todoEntity.isCompleted }))
+                    _state.emit(_state.value.copy(allTodos = result.data.sortedBy { todoEntity -> todoEntity.isCompleted }))
                 }
 
             }
