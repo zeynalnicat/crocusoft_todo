@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.Path
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,6 +29,7 @@ import com.example.crocusoft_todo.ui.navigation.AppRoutes
 import kotlinx.coroutines.flow.SharedFlow
 
 
+
 @Composable
 fun SplashContent(
     navController: NavController,
@@ -36,18 +38,14 @@ fun SplashContent(
 ) {
 
 
-    LaunchedEffect(Unit) {
-        postIntent(SplashContract.Intent.CheckLog)
-    }
 
     LaunchedEffect(effect) {
-        effect.collect {
-            when (it) {
+        effect.collect{
+            when(it){
                 SplashContract.Effect.Navigate -> navController.navigate(AppRoutes.HomeScreen.route)
             }
         }
     }
-
 
 
     Scaffold(

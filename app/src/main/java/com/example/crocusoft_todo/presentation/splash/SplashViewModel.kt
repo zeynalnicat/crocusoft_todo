@@ -39,18 +39,7 @@ class SplashViewModel @Inject constructor(val sharedPreference: SharedPreference
 
                 }
             }
-
-            SplashContract.Intent.CheckLog -> {
-                val isLogged = sharedPreference.getBoolean(SHARED_PREF_KEY, false)
-                Log.i("isLogged",isLogged.toString())
-
-                if (isLogged) {
-                    viewModelScope.launch {
-                        _effect.emit(SplashContract.Effect.Navigate)
-                    }
-                }
-
-            }
+            
         }
     }
 }

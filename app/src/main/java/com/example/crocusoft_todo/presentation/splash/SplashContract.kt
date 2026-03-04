@@ -5,8 +5,7 @@ sealed interface SplashContract {
     sealed interface Intent {
 
         data object HandleLog : Intent
-
-        data object CheckLog : Intent
+        
     }
 
     sealed interface Effect {
@@ -14,6 +13,7 @@ sealed interface SplashContract {
 
         data object Navigate : Effect
     }
+
 
 
 }
