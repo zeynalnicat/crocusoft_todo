@@ -11,6 +11,7 @@ import com.example.crocusoft_todo.domain.usecase.CheckTodoUseCase
 import com.example.crocusoft_todo.domain.usecase.FetchCompletedUseCase
 import com.example.crocusoft_todo.domain.usecase.FetchTodosUseCase
 import com.example.crocusoft_todo.domain.usecase.InsertTodoUseCase
+import com.example.crocusoft_todo.domain.usecase.RemoveTodoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -27,6 +28,7 @@ class HomeViewModel @Inject constructor(
     private val insertTodoUseCase: InsertTodoUseCase,
     private val fetchCompletedUseCase: FetchCompletedUseCase,
     private val checkTodoUseCase: CheckTodoUseCase,
+    private val removeTodoUseCase: RemoveTodoUseCase
 ) :
     ViewModel() {
 
@@ -55,7 +57,10 @@ class HomeViewModel @Inject constructor(
                 onCheckTodo(intent.todoEntity.id, !intent.todoEntity.isCompleted)
             }
 
-            is HomeContract.Intent.OnDeleteTodo -> {}
+            is HomeContract.Intent.OnDeleteTodo -> {
+                onRemove(intent.todoEntity)
+            }
+
             HomeContract.Intent.OnFetchCompletedTodos -> {
                 onFetchCompletedTodos()
             }
@@ -84,6 +89,17 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private fun onRemove(todo: TodoEntity) {
+        viewModelScope.launch {
+            when (val result = removeTodoUseCase(todo)) {
+                is Result.Error -> _effect.emit(HomeContract.Effect.OnShowError(result.message))
+                is Result.Success<*> -> {
+                    onFetchTodos()
+                }
+            }
+        }
+    }
+
     private fun onFetchActives() {
 //        viewModelScope.launch {
 //            when (val result = fetchCompletedUseCase(isCompleted = false)) {
@@ -98,9 +114,10 @@ class HomeViewModel @Inject constructor(
 //        }
 
         viewModelScope.launch {
-            _state.emit(_state.value.copy(
-                activeTodos = _state.value.allTodos.filter { !it.isCompleted }
-            ))
+            _state.emit(
+                _state.value.copy(
+                    activeTodos = _state.value.allTodos.filter { !it.isCompleted }
+                ))
         }
     }
 
@@ -119,11 +136,11 @@ class HomeViewModel @Inject constructor(
 //        }
 
         viewModelScope.launch {
-            _state.emit(_state.value.copy(
-                completedTodos = _state.value.allTodos.filter { it.isCompleted }
-            ))
+            _state.emit(
+                _state.value.copy(
+                    completedTodos = _state.value.allTodos.filter { it.isCompleted }
+                ))
         }
-
 
 
     }

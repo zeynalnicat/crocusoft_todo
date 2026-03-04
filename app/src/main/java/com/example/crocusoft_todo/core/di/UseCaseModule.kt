@@ -5,6 +5,7 @@ import com.example.crocusoft_todo.domain.usecase.CheckTodoUseCase
 import com.example.crocusoft_todo.domain.usecase.FetchCompletedUseCase
 import com.example.crocusoft_todo.domain.usecase.FetchTodosUseCase
 import com.example.crocusoft_todo.domain.usecase.InsertTodoUseCase
+import com.example.crocusoft_todo.domain.usecase.RemoveTodoUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,5 +32,8 @@ object UseCaseModule {
     fun provideCheckTodoUseCase(homeRepository: HomeRepository): CheckTodoUseCase =
         CheckTodoUseCase(homeRepository)
 
+    @Provides
+    fun provideRemoveTodoUseCase(homeRepository: HomeRepository): RemoveTodoUseCase =
+        RemoveTodoUseCase(homeRepository)
 
 }
