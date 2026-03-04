@@ -2,6 +2,9 @@ package com.example.crocusoft_todo.presentation.home.components
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -13,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSwipeToDismissBoxState
@@ -64,26 +68,26 @@ fun TodoList(
             }
 
         } else {
-            Log.i("todos", todos.toString())
-            todos.forEach { todo ->
-                AnimatedVisibility(
-                    visible = true,
-                    enter = fadeIn() + expandVertically(),
-                    exit = fadeOut() + shrinkVertically()
+            LazyColumn {
+                items(
+                    count = todos.size,
                 ) {
-
                     TodoItem(
-                        todoEntity = todo,
+                        modifier = Modifier.animateItem(
+                            fadeInSpec = tween(durationMillis = 250),
+                            fadeOutSpec = tween(durationMillis = 100),
+                            placementSpec = spring(stiffness = Spring.StiffnessLow)
+                        ),
+                        todoEntity = todos[it],
                         postIntent = postIntent
                     )
 
+                    Spacer(modifier = Modifier.height(DsTheme.dimens.dp2))
+
                 }
 
-                Spacer(modifier = Modifier.height(DsTheme.dimens.dp2))
-
-
-
             }
+
         }
     }
 

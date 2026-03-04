@@ -50,6 +50,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun TodoItem(
+    modifier: Modifier = Modifier,
     todoEntity: TodoEntity,
     postIntent: (HomeContract.Intent) -> Unit,
 ) {
@@ -57,9 +58,9 @@ fun TodoItem(
     val maxSwipe = -220f
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .height(56.dp)
+            .height(DsTheme.dimens.dp14)
     ) {
 
         if (!todoEntity.isCompleted) {

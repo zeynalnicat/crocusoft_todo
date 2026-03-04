@@ -180,6 +180,7 @@ class HomeViewModel @Inject constructor(
                     _effect.emit(HomeContract.Effect.OnShowSuccess("Successfully added!"))
                     _state.emit(_state.value.copy(query = ""))
                     onFetchTodos()
+                    onFetchActives()
                 }
             }
         }

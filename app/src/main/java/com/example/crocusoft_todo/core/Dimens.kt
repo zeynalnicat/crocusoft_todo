@@ -33,6 +33,7 @@ object Dimens {
     val dp8 = 32.dp
     val dp9 = 36.dp
 
+    val dp14 = 56.dp
     val dp03 = 3.dp
     val dp02 = 2.dp
 
